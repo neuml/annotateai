@@ -97,7 +97,7 @@ _Source: https://arxiv.org/pdf/2005.11401_
 
 ### Annotate paper "HunyuanVideo: A Systematic Framework For Large Video Generative Models"
 
-This paper builds the largest open-source video generation model. It's trending on [Papers With Code](https://paperswithcode.com/) as of Dec 2024.
+This paper builds the largest open-source video generation model as of Dec 2024.
 
 ```python
 annotate("https://arxiv.org/pdf/2412.03603v2")
