@@ -7,7 +7,7 @@ with open("README.md", "r", encoding="utf-8") as f:
 
 setup(
     name="annotateai",
-    version="0.3.0",
+    version="0.4.0",
     author="NeuML",
     description="Automatically annotate papers using LLMs",
     long_description=DESCRIPTION,
