@@ -6,7 +6,6 @@ Requires the following packages
 """
 
 import os
-import platform
 
 from urllib.parse import urlparse
 
@@ -29,15 +28,12 @@ class Application:
         Creates a new application.
         """
 
+        # Search for additional allowed environment variables
+        kwargs = {x: int(os.environ[x]) for x in ["n_ctx"] if x in os.environ}
+
+        # Annotation instance
         self.annotate = Annotate(
-            os.environ.get(
-                "LLM",
-                (
-                    "NeuML/Llama-3.1_OpenScholar-8B-AWQ"
-                    if platform.machine() in ("x86_64", "AMD")
-                    else "bartowski/Llama-3.1_OpenScholar-8B-GGUF/Llama-3.1_OpenScholar-8B-Q4_K_M.gguf"
-                ),
-            )
+            llm=os.environ.get("LLM", "Qwen/Qwen3-4B-Instruct-2507"), maxlength=int(os.environ.get("MAXLENGTH", 10000)), **kwargs
         )
 
         # Embeddings database for search (lazy loaded)

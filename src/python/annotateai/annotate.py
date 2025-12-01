@@ -22,16 +22,19 @@ class Annotate(Pipeline):
     Automatically annotates papers using LLMs.
     """
 
-    def __init__(self, llm):
+    def __init__(self, llm, maxlength=10000, **kwargs):
         """
         Creates a new Annotation pipeline.
 
         Args:
             llm: LLM path
+            maxlength: maximum prompt length
+            kwargs: additional LLM args
         """
 
         # Create LLM pipeline
-        self.llm = LLM(llm)
+        self.llm = LLM(llm, **kwargs)
+        self.maxlength = maxlength
 
         # Create segmentation pipeline
         self.segment = Segmentation(sentences=True, cleantext=False)
@@ -141,7 +144,7 @@ class Annotate(Pipeline):
 
         result = None
         for x in tqdm([prompt], desc="Extracting title", disable=not progress):
-            result = self.llm([{"role": "user", "content": x}], maxlength=2048)
+            result = self.llm([{"role": "user", "content": x}], maxlength=2048, stripthink=True)
 
         return result
 
@@ -165,7 +168,7 @@ class Annotate(Pipeline):
 
         result = None
         for x in tqdm([prompt], desc="Generating keywords", disable=not progress):
-            result = self.llm([{"role": "user", "content": x}], maxlength=2048)
+            result = self.llm([{"role": "user", "content": x}], maxlength=2048, stripthink=True)
 
         return result
 
@@ -234,7 +237,7 @@ class Annotate(Pipeline):
         topics = []
         for prompt in tqdm(prompts, desc="Generating topics", disable=not progress):
             # Generate topic
-            topic = self.llm([{"role": "user", "content": prompt}], maxlength=10000)
+            topic = self.llm([{"role": "user", "content": prompt}], maxlength=self.maxlength, stripthink=True)
 
             # Clean topic and append
             topics.append(re.sub(r"[^\x00-\x7f]", r"", topic))
