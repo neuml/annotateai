@@ -63,25 +63,21 @@ This project also works well with papers from [PubMed](https://pubmed.ncbi.nlm.n
 
 ### Setup
 
-Install the following.
-
-```bash
-# Change autoawq[kernels] to "autoawq autoawq-kernels" if a flash-attn error is raised
-pip install annotateai autoawq[kernels]
-
-# macOS users should run this instead
-pip install annotateai llama-cpp-python
-```
-
 The primary input parameter is the path to the LLM. This project is backed by [txtai](https://github.com/neuml/txtai) and it supports any [txtai-supported LLM](https://neuml.github.io/txtai/pipeline/text/llm/).
 
 ```python
 from annotateai import Annotate
 
-# This model works well with medical and scientific literature
+# Lightweight but powerful default model
+annotate = Annotate("Qwen/Qwen3-4B-Instruct-2507")
+
+# The previous default model uses the now deprecated AutoAWQ library
+# Run pip install autoawq to enable
+# Note as time goes on, this may require pinning to older versions of transformers & torch
 annotate = Annotate("NeuML/Llama-3.1_OpenScholar-8B-AWQ")
 
-# macOS users should run this instead
+# llama.cpp version of the above model
+# Run pip install llama-cpp-python to enable
 annotate = Annotate(
   "bartowski/Llama-3.1_OpenScholar-8B-GGUF/Llama-3.1_OpenScholar-8B-Q4_K_M.gguf"
 )
@@ -133,15 +129,16 @@ pip install txtai[pipeline-llm]
 
 ```python
 # LLM API services
-annotate = Annotate("gpt-4o")
-annotate = Annotate("claude-3-5-sonnet-20240620")
+annotate = Annotate("gpt-5.1")
+annotate = Annotate("claude-opus-4-5-20251101")
+annotate = Annotate("gemini/gemini-3-pro-preview")
 
 # Ollama endpoint
-annotate = Annotate("ollama/llama3.1")
+annotate = Annotate("ollama/gpt-oss")
 
 # llama.cpp GGUF from Hugging Face Hub
 annotate = Annotate(
-  "bartowski/Llama-3.1_OpenScholar-8B-GGUF/Llama-3.1_OpenScholar-8B-Q4_K_M.gguf"
+  "unsloth/gpt-oss-20b-GGUF/gpt-oss-20b-Q4_K_M.gguf"
 )
 ```
 
@@ -176,7 +173,7 @@ docker run -d --gpus=all -it -p 8501:8501 neuml/annotateai
 The LLM can also be set via ENV parameters.
 
 ```
-docker run -d --gpus=all -it -p 8501:8501 -e LLM=bartowski/Llama-3.2-1B-Instruct-GGUF/Llama-3.2-1B-Instruct-Q4_K_M.gguf neuml/annotateai
+docker run -d --gpus=all -it -p 8501:8501 -e LLM=unsloth/gpt-oss-20b-GGUF/gpt-oss-20b-Q4_K_M.gguf -e MAXLENGTH=10000 -e n_ctx=4096 neuml/annotateai
 ```
 
 The code for this application can be found in the [app folder](https://github.com/neuml/annotateai/tree/master/app).
