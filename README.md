@@ -71,15 +71,13 @@ from annotateai import Annotate
 # Lightweight but powerful default model
 annotate = Annotate("Qwen/Qwen3-4B-Instruct-2507")
 
-# The previous default model uses the now deprecated AutoAWQ library
-# Run pip install autoawq to enable
-# Note as time goes on, this may require pinning to older versions of transformers & torch
-annotate = Annotate("NeuML/Llama-3.1_OpenScholar-8B-AWQ")
+# Gemma 4
+annotate = Annotate("google/gemma-4-E4B-it")
 
 # llama.cpp version of the above model
 # Run pip install llama-cpp-python to enable
 annotate = Annotate(
-  "bartowski/Llama-3.1_OpenScholar-8B-GGUF/Llama-3.1_OpenScholar-8B-Q4_K_M.gguf"
+  "unsloth/gemma-4-E2B-it-GGUF/gemma-4-E2B-it-Q4_K_M.gguf"
 )
 ```
 
@@ -129,16 +127,16 @@ pip install txtai[pipeline-llm]
 
 ```python
 # LLM API services
-annotate = Annotate("gpt-5.1")
-annotate = Annotate("claude-opus-4-5-20251101")
+annotate = Annotate("gpt-5.5")
+annotate = Annotate("claude-opus-4-6-20260205")
 annotate = Annotate("gemini/gemini-3-pro-preview")
 
 # Ollama endpoint
-annotate = Annotate("ollama/gpt-oss")
+annotate = Annotate("ollama/gemma4")
 
 # llama.cpp GGUF from Hugging Face Hub
 annotate = Annotate(
-  "unsloth/gpt-oss-20b-GGUF/gpt-oss-20b-Q4_K_M.gguf"
+  "unsloth/gemma-4-E4B-it-GGUF/gemma-4-E4B-it-Q4_K_M.gguf"
 )
 ```
 
@@ -173,7 +171,7 @@ docker run -d --gpus=all -it -p 8501:8501 neuml/annotateai
 The LLM can also be set via ENV parameters.
 
 ```
-docker run -d --gpus=all -it -p 8501:8501 -e LLM=unsloth/gpt-oss-20b-GGUF/gpt-oss-20b-Q4_K_M.gguf -e MAXLENGTH=10000 -e n_ctx=4096 neuml/annotateai
+docker run -d --gpus=all -it -p 8501:8501 -e LLM=unsloth/gemma-4-E4B-it-GGUF/gemma-4-E4B-it-Q4_K_M.gguf -e MAXLENGTH=10000 -e n_ctx=4096 neuml/annotateai
 ```
 
 The code for this application can be found in the [app folder](https://github.com/neuml/annotateai/tree/master/app).
